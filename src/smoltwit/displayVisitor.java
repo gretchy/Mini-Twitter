@@ -1,19 +1,8 @@
 package smoltwit;
 
-public class displayInfo implements VisitorPattern {
+// Visitor is implemented in this class
+public class displayVisitor implements VisitorPattern {
 	private int totalUsers, totalTweets, totalGroups;	
-	
-	@Override
-	public void visit(User user) {
-		setTotalUsers(User.getUserTotal());
-		setTotalTweets(User.getTweetTotal());
-	}
-
-	@Override
-	public void visit(UserGroup group) {
-		setTotalGroups(UserGroup.getGroupTotal());
-		
-	}
 
 	public int getTotalUsers() {
 		return totalUsers;
@@ -37,5 +26,17 @@ public class displayInfo implements VisitorPattern {
 
 	public void setTotalTweets(int totalMessages) {
 		this.totalTweets = totalMessages;
+	}
+	
+	@Override
+	public void goVisit(User user) {
+		setTotalUsers(User.getUserTotal());
+		setTotalTweets(User.getTweetTotal());
+	}
+
+	@Override
+	public void goVisit(UserGroup group) {
+		setTotalGroups(UserGroup.getGroupTotal());
+		
 	}
 }

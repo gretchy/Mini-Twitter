@@ -2,10 +2,10 @@ package smoltwit;
 
 import java.util.*;
 
-public class UserGroup {
+public class UserGroup implements Visitation{
 	
 	private String groupID; // unique ID used to group users
-	private static int numGroups = 3;
+	private static int numGroups = 2;
 	
 	ArrayList<String> group = new ArrayList<String>(); // list stores the IDs of users and user groups
 	ArrayList<UserGroup> allGroups = new ArrayList<UserGroup>();
@@ -24,10 +24,6 @@ public class UserGroup {
 	
 	public void addToGroup(User user) {
 		group.add(user.getID());
-	}
-	
-	public void acceptVisitor(VisitorPattern visitor){
-		visitor.visit(this);
 	}	
 	
 	public String getGroupID() {
@@ -41,8 +37,9 @@ public class UserGroup {
 	public static int getGroupTotal() {
 		return numGroups;
 	}
-
-	public static void setGroupTotal(int totalGroups) {
-		numGroups = totalGroups;
+	
+	@Override
+	public void acceptVisitation(VisitorPattern visitor){
+		visitor.goVisit(this);
 	}
 }
