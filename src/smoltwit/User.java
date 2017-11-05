@@ -2,15 +2,17 @@ package smoltwit;
 
 import java.util.*;
 
-public class User implements Visitation, ObservedUser{
+import javax.swing.text.html.ListView;
+
+public class User implements Visitation, ObservedUser {
 	
 	String userID; // unique user ID
-	private static int totalTweets = 0;
 	
 	ArrayList<String> followers = new ArrayList<String>();
 	ArrayList<String> following = new ArrayList<String>();
 	ArrayList<String> twitfeed = new ArrayList<String>();
-	ArrayList<ObserverPattern> observers;
+	ArrayList<String> allTwits = new ArrayList<String>();
+	ArrayList<ObserverPattern> usersObservers;
 	
 	public User() {}
 	
@@ -28,12 +30,24 @@ public class User implements Visitation, ObservedUser{
 	
 	public void startFollowing(String user) {
 		following.add(user);
-		twitfeed.add(SmallTwit.allUsers.get(user).getTweets()); // adds tweets by following user
+		
+		for(String twit : SmallTwit.allUsers.get(user).twitfeed){
+			if(!allTwits.contains(twit))
+				allTwits.add(twit); // adds tweets by following user
+		}
 	}
 	
 	public void twit(String tweet){
-		totalTweets++;
-		twitfeed.add(tweet);		
+		twitfeed.add(tweet);
+		allTwits.add(tweet);
+		SmallTwit.allTweets.add(tweet);
+		for(String person : followers){
+			SmallTwit.allUsers.get(person).addTweet(tweet);
+		}
+	}
+	
+	public void addTweet(String tweet) {
+		allTwits.add(tweet);
 	}
 	
 	public String getFollowers(){
@@ -56,7 +70,7 @@ public class User implements Visitation, ObservedUser{
 	
 	public String getTweets(){
 		String listTweets = "";
-		for(String twits : twitfeed){
+		for(String twits : allTwits){
 			listTweets += twits;
 		}
 		return listTweets;
@@ -67,32 +81,32 @@ public class User implements Visitation, ObservedUser{
 	}
 
 	public static int getTweetTotal() {
-		return totalTweets;
+		return SmallTwit.allTweets.size();
 	}
 
 	@Override
-	public void attach(ObserverPattern obj) {
-		observers.add(obj);
+	public void attach(ObserverPattern observer) {
+		usersObservers.add(observer);
 		
 	}
 
 	@Override
-	public void detach(ObserverPattern obj) {
-		observers.remove(obj);
+	public void detach(ObserverPattern observer) {
+		usersObservers.remove(observer);
 	}
 
 	@Override
 	public void notifyObservers() {
-		ArrayList<ObserverPattern> presentObservers = new ArrayList<ObserverPattern>(this.observers);
+		List<ObserverPattern> presentObservers = new ArrayList<>(usersObservers);
 		
-		for(ObserverPattern obj: presentObservers){
-			obj.Update();
+		for(ObserverPattern observer: presentObservers){
+			observer.Update();
 		}
 	}
 
 	@Override
-	public List<String> getUpdate(ObserverPattern obj) {
-		return this.twitfeed;		
+	public List<String> getUpdate(ObserverPattern observer) {
+		return twitfeed;		
 	}
 
 	@Override

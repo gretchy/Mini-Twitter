@@ -7,8 +7,7 @@ public class UserGroup implements Visitation{
 	private String groupID; // unique ID used to group users
 	private static int numGroups = 2;
 	
-	ArrayList<String> group = new ArrayList<String>(); // list stores the IDs of users and user groups
-	ArrayList<UserGroup> allGroups = new ArrayList<UserGroup>();
+	ArrayList<String> allGroups = new ArrayList<String>(); // list stores the IDs of users and user groups
 	
 	public UserGroup() {
 		numGroups++;
@@ -23,7 +22,7 @@ public class UserGroup implements Visitation{
 	}
 	
 	public void addToGroup(User user) {
-		group.add(user.getID());
+		allGroups.add(user.getID());
 	}	
 	
 	public String getGroupID() {

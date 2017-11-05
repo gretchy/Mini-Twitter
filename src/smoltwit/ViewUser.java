@@ -2,6 +2,7 @@ package smoltwit;
 
 import javax.swing.*;
 import java.awt.event.ActionListener;
+import java.util.TimerTask;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -12,15 +13,6 @@ public class ViewUser {
 	private User user;
 	private String userID;
 	private JFrame uvFrame;
-
-	public void run(String user) {
-		try {
-			ViewUser window = new ViewUser(user);
-			window.uvFrame.setVisible(true);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
 	
 	public ViewUser(String person) { // creates the application
 		userID = person;
@@ -28,6 +20,15 @@ public class ViewUser {
 			this.user = SmallTwit.allUsers.get(person);
 		}
 		initialize();
+	}
+
+	public void run(String user) {
+		try {
+			ViewUser popup = new ViewUser(user);
+			popup.uvFrame.setVisible(true);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	private void initialize() { // initializes frame contents
@@ -39,22 +40,34 @@ public class ViewUser {
 		
 		// displays for following, followers, and newsfeed
 		JTextArea followingPane = new JTextArea();
-		followingPane.setText("----- Currently Following Users -----");
-		followingPane.setBounds(10, 72, 230, 135);
-		uvFrame.getContentPane().add(followingPane);
-		followingPane.append("\n" + user.getFollowing());
-		
 		JTextArea followersPane = new JTextArea();
-		followersPane.setText("----- Your Followers -----");
-		followersPane.setBounds(249, 72, 230, 135);
-		uvFrame.getContentPane().add(followersPane);
-		followersPane.append("\n" + user.getFollowers());
-		
 		JTextArea tweetTextField = new JTextArea();
-		tweetTextField.setText("----- Twit NewsFeed -----");
-		tweetTextField.setBounds(10, 278, 469, 177);
-		uvFrame.getContentPane().add(tweetTextField);
-		tweetTextField.append("\n" + user.getTweets());
+		ActionListener constantRefresh = new ActionListener() {
+            public void actionPerformed(ActionEvent evt) {
+            	
+        		followingPane.setText("----- Currently Following Users -----");
+        		followingPane.setBounds(10, 72, 230, 135);
+        		uvFrame.getContentPane().add(followingPane);
+        		followingPane.append("\n" + user.getFollowing());
+        		
+        		
+        		followersPane.setText("----- Your Followers -----");
+        		followersPane.setBounds(249, 72, 230, 135);
+        		uvFrame.getContentPane().add(followersPane);
+        		followersPane.append("\n" + user.getFollowers());
+        		
+        		
+        		tweetTextField.setText("----- Twit NewsFeed -----");
+        		tweetTextField.setBounds(10, 278, 469, 177);
+        		uvFrame.getContentPane().add(tweetTextField);
+        		tweetTextField.append("\n" + user.getTweets());
+            }
+		};
+		Timer timer = new Timer(100 ,constantRefresh); // Execute task each 100 miliseconds
+		timer.setRepeats(true);
+		timer.start();
+		
+		
 		
 		// section to follow a new user
 		JTextField userTextField = new JTextField();
@@ -76,11 +89,11 @@ public class ViewUser {
 						JOptionPane.showMessageDialog(followButton, "Cannot follow yourself.");
 					}
 					else {
-					user.startFollowing(userTextField.getText());
-					SmallTwit.allUsers.get(userTextField.getText()).addFollower(userID);;
+						user.startFollowing(userTextField.getText());
+						SmallTwit.allUsers.get(userTextField.getText()).addFollower(userID);;
 
-					String following = "\n  " + userTextField.getText();
-					followingPane.append(following);
+						String following = "\n  " + userTextField.getText();
+						followingPane.append(following);
 					}
 				}
 				else {
@@ -108,7 +121,6 @@ public class ViewUser {
 			public void actionPerformed(ActionEvent e) {
 				String news = "\n " + userID + ": " + sendTweetTxtField.getText();
 				user.twit(news);
-				SmallTwit.allTweets.add("\nbob: Class Registration starts");
 				tweetTextField.append(news);				
 			}
 		});

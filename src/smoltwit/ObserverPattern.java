@@ -4,5 +4,5 @@ package smoltwit;
 public interface ObserverPattern {
 	
 	public void Update();
-	public void setSubject(ObservedUser user);
+	public void userToObserve(ObservedUser user);
 }

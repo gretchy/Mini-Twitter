@@ -4,32 +4,23 @@ import java.util.List;
 
 // Visitor is implemented in this class
 public class VisitUser {
-	private List<Visitation> items;
+	private List<Visitation> users;
 	
-	public int showUserTotal(){
+	public int showUsers(){
 		displayVisitor visitor = new displayVisitor();
 		
-		for(Visitation item: items){
-			item.acceptVisitation(visitor);
+		for(Visitation person: users){
+			person.acceptVisitation(visitor);
 		}
 		return visitor.getTotalUsers();
 		
 	}
 	
-	public int showGroupTotal(){
+	public int showTweets(){
 		displayVisitor visitor = new displayVisitor();
 		
-		for(Visitation item: items){
-			item.acceptVisitation(visitor);
-		}
-		return visitor.getTotalGroups();
-	}
-	
-	public int showMessageTotal(){
-		displayVisitor visitor = new displayVisitor();
-		
-		for(Visitation item: items){
-			item.acceptVisitation(visitor);
+		for(Visitation person: users){
+			person.acceptVisitation(visitor);
 		}
 		return visitor.getTotalTweets();
 	}

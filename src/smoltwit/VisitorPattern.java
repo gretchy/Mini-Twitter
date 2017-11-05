@@ -5,4 +5,5 @@ public interface VisitorPattern {
 	
 	public void goVisit(User user);
 	public void goVisit(UserGroup group);
+
 }

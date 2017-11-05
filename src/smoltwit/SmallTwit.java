@@ -17,13 +17,12 @@ public class SmallTwit {
 	public static Map<String, User> allUsers = new HashMap<String, User>();
 	public static ArrayList<String> allTweets = new ArrayList<String>();
 	private int totalUsers = 0, totalGroups = 0, totalTweets = 0; // stores total num of users, total num of groups, total num of tweets
-	private double positiveTweets; // stores % of positive Tweets in all users' newsfeeds
-
+	
 	private static SmallTwit instance = null;
 	private JFrame twitterFrame;
 	private JTextField userTextField, groupTextField;
 
-	protected static SmallTwit getInstance() { // Singleton implementation
+	protected static SmallTwit getInstance() {
 		if (instance == null) {
 			instance = new SmallTwit();
 			instance.run();
@@ -37,8 +36,8 @@ public class SmallTwit {
 
 	private void run() { // in charge of launching Admin Control
 		try {
-			SmallTwit window = new SmallTwit();
-			window.twitterFrame.setVisible(true);
+			SmallTwit sesh = new SmallTwit();
+			sesh.twitterFrame.setVisible(true);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -51,7 +50,7 @@ public class SmallTwit {
 		twitterFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		twitterFrame.getContentPane().setLayout(null);
 		
-		// Text Pane for output
+		// output text pane
 		JTextArea outputPane = new JTextArea(); 
 		outputPane.setText("[all outputs shown here]");
 		outputPane.setBounds(394, 218, 420, 110);
@@ -68,13 +67,13 @@ public class SmallTwit {
 		rootNode.add(new DefaultMutableTreeNode("bob"));
 		allUsers.put("bob", new User());
 		SmallTwit.allUsers.get("bob").twit("\nbob: Horror night is good");
-		allTweets.add("\nbob: Horror night is good");
+		//allTweets.add("\nbob: Horror night is good");
 		SmallTwit.allUsers.get("bob").twit("\nbob: Class Registration starts");
-		allTweets.add("\nbob: Class Registration starts");
+		//allTweets.add("\nbob: Class Registration starts");
 		rootNode.add(new DefaultMutableTreeNode("steve"));
 		allUsers.put("steve", new User());
 		SmallTwit.allUsers.get("steve").twit("\nsteve: CS356 is cool");
-		allTweets.add("\nsteve: CS356 is cool");
+		//allTweets.add("\nsteve: CS356 is cool");
 		DefaultMutableTreeNode group1 = new DefaultMutableTreeNode("CS356");
 		rootNode.add(group1);
 		allUsers.put("CS356", new User());
@@ -146,7 +145,7 @@ public class SmallTwit {
 
 		// Add User Group section
 		groupTextField = new JTextField();
-		groupTextField.setText("Enter User Group Id");
+		groupTextField.setText("Enter User Group ID");
 		groupTextField.setBounds(395, 80, 182, 60);
 		twitterFrame.getContentPane().add(groupTextField);
 		groupTextField.setColumns(10);
@@ -241,7 +240,7 @@ public class SmallTwit {
 
 		totalTweetsButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				totalTweets = User.getTweetTotal();
+				totalTweets = allTweets.size();
 				outputPane.setText("\nNumber of tweets: " + totalTweets);
 			}
 		});
