@@ -14,8 +14,8 @@ import java.util.*;
 // Singleton is implemented in this class
 public class SmallTwit {
 
-	public static Map<String, User> allUsers = new HashMap<String, User>();
-	public static ArrayList<String> allTweets = new ArrayList<String>();
+	public static Map<String, User> allUsers = new HashMap<String, User>(); // stores all users on Small Twitter
+	public static ArrayList<String> allTweets = new ArrayList<String>(); // stores all tweets on Small Twitter
 	private int totalUsers = 0, totalGroups = 0, totalTweets = 0; // stores total num of users, total num of groups, total num of tweets
 	
 	private static SmallTwit instance = null;
@@ -50,13 +50,13 @@ public class SmallTwit {
 		twitterFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		twitterFrame.getContentPane().setLayout(null);
 		
-		// output text pane
+		// output text pane to display positive percentages of tweets ,etc.
 		JTextArea outputPane = new JTextArea(); 
 		outputPane.setText("[all outputs shown here]");
 		outputPane.setBounds(394, 218, 420, 110);
 		twitterFrame.getContentPane().add(outputPane);
 
-		// creates the beginning Tree with pre-filled users, groups, tweets, etc.
+		// creates the beginning Tree with pre-filled users, groups, tweets from assignment
 		JTree TwitterTree;
 		DefaultMutableTreeNode rootNode = new DefaultMutableTreeNode("Root");
 		TwitterTree = new JTree(rootNode);
@@ -67,13 +67,10 @@ public class SmallTwit {
 		rootNode.add(new DefaultMutableTreeNode("bob"));
 		allUsers.put("bob", new User());
 		SmallTwit.allUsers.get("bob").twit("\nbob: Horror night is good");
-		//allTweets.add("\nbob: Horror night is good");
 		SmallTwit.allUsers.get("bob").twit("\nbob: Class Registration starts");
-		//allTweets.add("\nbob: Class Registration starts");
 		rootNode.add(new DefaultMutableTreeNode("steve"));
 		allUsers.put("steve", new User());
 		SmallTwit.allUsers.get("steve").twit("\nsteve: CS356 is cool");
-		//allTweets.add("\nsteve: CS356 is cool");
 		DefaultMutableTreeNode group1 = new DefaultMutableTreeNode("CS356");
 		rootNode.add(group1);
 		allUsers.put("CS356", new User());
@@ -106,19 +103,18 @@ public class SmallTwit {
 		twitterFrame.getContentPane().add(TwitterTree);
 
 		// Add User section
-		userTextField = new JTextField();
+		userTextField = new JTextField(); // text field to input user ID to add
 		userTextField.setText("Enter User ID");
 		userTextField.setBounds(395, 11, 182, 60);
 		twitterFrame.getContentPane().add(userTextField);
 		userTextField.setColumns(10);
 
-		JButton addUserButton = new JButton("Add User");
+		JButton addUserButton = new JButton("Add User"); // button to add user to tree
 		addUserButton.setFont(new Font("Arial", Font.BOLD, 20));
 		addUserButton.setBackground(new Color(97, 237, 211));
 		addUserButton.setForeground(new Color(85, 89, 88));
 		addUserButton.setBorderPainted(false);
 
-		// adding new user
 		addUserButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
 				if (!allUsers.containsKey(userTextField.getText())) { // checks to see if user is already in hashmap
@@ -134,7 +130,8 @@ public class SmallTwit {
 						treeModel.reload(rootNode);
 					}
 					outputPane.append("\nAdded User " + userTextField.getText());
-				} else {
+				}
+				else {
 					outputPane.append("\nCould not add user. User already exists.");
 				}
 			}
@@ -144,19 +141,18 @@ public class SmallTwit {
 		twitterFrame.getContentPane().add(addUserButton);
 
 		// Add User Group section
-		groupTextField = new JTextField();
+		groupTextField = new JTextField(); // text field to input user group ID to add
 		groupTextField.setText("Enter User Group ID");
 		groupTextField.setBounds(395, 80, 182, 60);
 		twitterFrame.getContentPane().add(groupTextField);
 		groupTextField.setColumns(10);
 
-		JButton addGroupButton = new JButton("Add Group");
+		JButton addGroupButton = new JButton("Add Group"); // button to add user group to tree
 		addGroupButton.setFont(new Font("Arial", Font.BOLD, 20));
 		addGroupButton.setBackground(new Color(97, 237, 211));
 		addGroupButton.setForeground(new Color(85, 89, 88));
 		addGroupButton.setBorderPainted(false);
 
-		// Adding new user group
 		addGroupButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
 				if (!allUsers.containsKey(groupTextField.getText())) { // checks to see if user is already in hashmap
@@ -173,7 +169,8 @@ public class SmallTwit {
 					}
 					outputPane.append("\nAdded Group " + groupTextField.getText());
 					totalGroups++;
-				} else {
+				}
+				else {
 					outputPane.append("\nCould not add group. Group already exists.");
 				}
 			}
@@ -189,7 +186,7 @@ public class SmallTwit {
 		viewUserButton.setForeground(new Color(85, 89, 88));
 		viewUserButton.setBorderPainted(false);
 
-		viewUserButton.addMouseListener(new MouseAdapter() {
+		viewUserButton.addMouseListener(new MouseAdapter() { // checks for location of last mouse click to know which user to open
 			public void mouseClicked(MouseEvent event) {
 				DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) TwitterTree.getLastSelectedPathComponent();
 				ViewUser openUV = new ViewUser(selectedNode.toString());

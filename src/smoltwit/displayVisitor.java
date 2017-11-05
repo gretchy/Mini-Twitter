@@ -19,7 +19,5 @@ public class displayVisitor implements VisitorPattern {
 	}
 
 	@Override
-	public void goVisit(UserGroup group) {
-		
-	}
+	public void goVisit(UserGroup group) {}
 }

@@ -4,6 +4,7 @@ public class Driver {
 	
 	public static void main(String[] args) {
 		
-		SmallTwit.getInstance(); //triggers Admin Control and the whole process
+		//triggers Admin Control and the whole process
+		SmallTwit.getInstance(); 
 	}
 }

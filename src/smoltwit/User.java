@@ -8,36 +8,36 @@ public class User implements Visitation, ObservedUser {
 	
 	String userID; // unique user ID
 	
-	ArrayList<String> followers = new ArrayList<String>();
-	ArrayList<String> following = new ArrayList<String>();
-	ArrayList<String> twitfeed = new ArrayList<String>();
-	ArrayList<String> allTwits = new ArrayList<String>();
+	ArrayList<String> followers = new ArrayList<String>(); // stores the IDs of user's followers
+	ArrayList<String> following = new ArrayList<String>(); // stores the IDs that user is following
+	ArrayList<String> twitfeed = new ArrayList<String>(); // stores only the personal tweets made by user
+	ArrayList<String> allTwits = new ArrayList<String>(); // stores all tweets on user's newsfeed (including tweets from those that user is following)
 	ArrayList<ObserverPattern> usersObservers;
 	
-	public User() {}
+	public User() {} // constructor
 	
-	public String getID() {
+	public String getID() { // returns user ID
 		return userID;
 	}
 	
-	public void setID(String id) {
+	public void setID(String id) { // sets the user ID
 		userID = id;
 	}
 	
-	public void addFollower(String user) {
+	public void addFollower(String user) { // adds new follower of user
 		followers.add(user);
 	}
 	
-	public void startFollowing(String user) {
+	public void startFollowing(String user) { // adds to following ArrayList
 		following.add(user);
 		
-		for(String twit : SmallTwit.allUsers.get(user).twitfeed){
-			if(!allTwits.contains(twit))
-				allTwits.add(twit); // adds tweets by following user
+		for(String twit : SmallTwit.allUsers.get(user).twitfeed){ // adds tweets by following user
+			if(!allTwits.contains(twit)) // checks for duplicate tweets
+				allTwits.add(twit); 
 		}
 	}
 	
-	public void twit(String tweet){
+	public void twit(String tweet){ // function that allows user to post a tweet to their newsfeed/other's newsfeeds
 		twitfeed.add(tweet);
 		allTwits.add(tweet);
 		SmallTwit.allTweets.add(tweet);
@@ -46,11 +46,11 @@ public class User implements Visitation, ObservedUser {
 		}
 	}
 	
-	public void addTweet(String tweet) {
+	public void addTweet(String tweet) { // adds a tweet to a user's allTwits Arraylist (usually for any new tweets made by following)
 		allTwits.add(tweet);
 	}
 	
-	public String getFollowers(){
+	public String getFollowers(){ // returns the followers of a user
 		String listFollowers = "";
 		for(String person : followers){
 			listFollowers += person;
@@ -59,7 +59,7 @@ public class User implements Visitation, ObservedUser {
 		return listFollowers;
 	}
 	
-	public String getFollowing(){
+	public String getFollowing(){ // return the list of IDs a user is following
 		String listFollowing = "";
 		for(String person : following){
 			listFollowing += person;
@@ -68,7 +68,7 @@ public class User implements Visitation, ObservedUser {
 		return listFollowing;
 	}
 	
-	public String getTweets(){
+	public String getTweets(){ // gets all the tweets from a user's newsfeed (personal and ones made by others)
 		String listTweets = "";
 		for(String twits : allTwits){
 			listTweets += twits;
@@ -76,14 +76,16 @@ public class User implements Visitation, ObservedUser {
 		return listTweets;
 	}
 	
-	public static int getUserTotal() {
+	public static int getUserTotal() { // returns thhe total amount of users in Small Twitter
 		return SmallTwit.allUsers.size();
 	}
 
-	public static int getTweetTotal() {
+	public static int getTweetTotal() { // returns total amount of tweets made in Small Twitter
 		return SmallTwit.allTweets.size();
 	}
 
+	
+	// Overrides for the Observer/Visitor pattern
 	@Override
 	public void attach(ObserverPattern observer) {
 		usersObservers.add(observer);

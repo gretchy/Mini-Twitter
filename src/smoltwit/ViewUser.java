@@ -22,7 +22,7 @@ public class ViewUser {
 		initialize();
 	}
 
-	public void run(String user) {
+	public void run(String user) { // launches actual User View
 		try {
 			ViewUser popup = new ViewUser(user);
 			popup.uvFrame.setVisible(true);
@@ -42,6 +42,7 @@ public class ViewUser {
 		JTextArea followingPane = new JTextArea();
 		JTextArea followersPane = new JTextArea();
 		JTextArea tweetTextField = new JTextArea();
+		
 		ActionListener constantRefresh = new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
             	
@@ -63,20 +64,18 @@ public class ViewUser {
         		tweetTextField.append("\n" + user.getTweets());
             }
 		};
-		Timer timer = new Timer(100 ,constantRefresh); // Execute task each 100 miliseconds
+		Timer timer = new Timer(100 ,constantRefresh); // refreshes the followers/following/newsfeed every 100 ms
 		timer.setRepeats(true);
-		timer.start();
-		
-		
+		timer.start();		
 		
 		// section to follow a new user
-		JTextField userTextField = new JTextField();
+		JTextField userTextField = new JTextField(); // text field to enter user ID to follow
 		userTextField.setText("User Id");
 		userTextField.setBounds(10, 11, 223, 60);
 		uvFrame.getContentPane().add(userTextField);
 		userTextField.setColumns(10);
 		
-		JButton followButton = new JButton("Follow User");
+		JButton followButton = new JButton("Follow User"); // button to follow user
 		followButton.setFont(new Font("Arial",Font.BOLD,20));
 		followButton.setBackground(new Color(97,237,211));
 		followButton.setForeground(new Color(85,89,88));
@@ -84,19 +83,19 @@ public class ViewUser {
 		
 		followButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if(SmallTwit.allUsers.containsKey(userTextField.getText())){
-					if(userTextField.getText().equals(userID)) {
+				if(SmallTwit.allUsers.containsKey(userTextField.getText())){ // checks to see if IS is in hashmap
+					if(userTextField.getText().equals(userID)) { // tests to see if ID in textfield is the user itself
 						JOptionPane.showMessageDialog(followButton, "Cannot follow yourself.");
 					}
 					else {
 						user.startFollowing(userTextField.getText());
-						SmallTwit.allUsers.get(userTextField.getText()).addFollower(userID);;
+						SmallTwit.allUsers.get(userTextField.getText()).addFollower(userID); // adds user to the follower list of other user
 
 						String following = "\n  " + userTextField.getText();
 						followingPane.append(following);
 					}
 				}
-				else {
+				else { // user was never added to the tree, doesn't exist
 					JOptionPane.showMessageDialog(followButton, "User doesn't exist.");
 				}
 			}
@@ -105,13 +104,13 @@ public class ViewUser {
 		uvFrame.getContentPane().add(followButton);
 		
 		// section for user to send a tweet
-		JTextField sendTweetTxtField = new JTextField();
+		JTextField sendTweetTxtField = new JTextField(); // text field for tweet
 		sendTweetTxtField.setText("Tweet Message");
 		sendTweetTxtField.setBounds(10, 216, 255, 60);
 		uvFrame.getContentPane().add(sendTweetTxtField);
 		sendTweetTxtField.setColumns(10);
 		
-		JButton postTweetButton = new JButton("Post Tweet");
+		JButton postTweetButton = new JButton("Post Tweet"); // button to post tweet to own newsfeed/others' newsfeeds
 		postTweetButton.setFont(new Font("Arial",Font.BOLD,20));
 		postTweetButton.setBackground(new Color(128,172,229));
 		postTweetButton.setForeground(new Color(82,91,102));
