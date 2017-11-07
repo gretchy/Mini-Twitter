@@ -258,6 +258,8 @@ public class SmallTwit {
 		positiveWords.add("like");
 		positiveWords.add("amazing");
 		positiveWords.add("love");
+		positiveWords.add("awesome");
+		positiveWords.add("great");
 
 		posPercentageButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {

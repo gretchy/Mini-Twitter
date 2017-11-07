@@ -7,7 +7,7 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 
-// Composite is implemented in this class
+// Observer is implemented in this class
 public class ViewUser {
 
 	private User user;

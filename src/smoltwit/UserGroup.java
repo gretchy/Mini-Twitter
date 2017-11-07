@@ -2,6 +2,7 @@ package smoltwit;
 
 import java.util.*;
 
+// Visitor is implemented in this class
 public class UserGroup implements Visitation{
 	
 	private String groupID; // unique ID used to group users
