@@ -11,7 +11,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.*;
 
-// Singleton is implemented in this class
+// Singleton and Composite is implemented in this class
 public class SmallTwit {
 
 	public static Map<String, User> allUsers = new HashMap<String, User>(); // stores all users on Small Twitter

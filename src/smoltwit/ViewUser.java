@@ -2,12 +2,11 @@ package smoltwit;
 
 import javax.swing.*;
 import java.awt.event.ActionListener;
-import java.util.TimerTask;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 
-// Observer is implemented in this class
+// Composite is implemented in this class
 public class ViewUser {
 
 	private User user;

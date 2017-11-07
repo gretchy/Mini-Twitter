@@ -2,8 +2,6 @@ package smoltwit;
 
 import java.util.*;
 
-import javax.swing.text.html.ListView;
-
 //Observer and Visitor is implemented in this class
 public class User implements Visitation, ObservedUser {
 	
