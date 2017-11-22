@@ -294,6 +294,7 @@ public class SmallTwit {
 		uniqueButton.setBorderPainted(false);
 
 		uniqueButton.addActionListener(new ActionListener() {
+			@SuppressWarnings("unlikely-arg-type")
 			public void actionPerformed(ActionEvent e) {
 				String validity = "";
 				boolean uniqueness = true; // assuming true until we find duplicates
@@ -324,13 +325,11 @@ public class SmallTwit {
 		lastUpdated.setBorderPainted(false);
 
 		lastUpdated.addActionListener(new ActionListener() {
-			@SuppressWarnings("unchecked")
 			public void actionPerformed(ActionEvent e) {
 				String latestUpdatedUser = lastAddedUser; // assumes first user in hashmap made the most recent update for comparison
 				long latestUpdatedUserTime = allUsers.get(latestUpdatedUser).getUpdateTime(); // stores time for the latestUpdatedUser
 				
 				for(Entry<String, User> entry : allUsers.entrySet()) {
-					String comparePerson = entry.getKey();
 					if (entry.getValue().getUpdateTime() > latestUpdatedUserTime)
 						latestUpdatedUser = entry.getKey();
 				}

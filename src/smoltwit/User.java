@@ -1,6 +1,5 @@
 package smoltwit;
 
-import java.text.DateFormat;
 import java.util.*;
 
 //Observer and Visitor is implemented in this class
