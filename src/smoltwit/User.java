@@ -1,11 +1,14 @@
 package smoltwit;
 
+import java.text.DateFormat;
 import java.util.*;
 
 //Observer and Visitor is implemented in this class
 public class User implements Visitation, ObservedUser {
 	
 	String userID; // unique user ID
+	private long creationTime; // stores the time when user object is created
+	private long lastUpdateTime; // stores the time when user last updated
 	
 	ArrayList<String> followers = new ArrayList<String>(); // stores the IDs of user's followers
 	ArrayList<String> following = new ArrayList<String>(); // stores the IDs that user is following
@@ -13,7 +16,10 @@ public class User implements Visitation, ObservedUser {
 	ArrayList<String> allTwits = new ArrayList<String>(); // stores all tweets on user's newsfeed (including tweets from those that user is following)
 	ArrayList<ObserverPattern> usersObservers;
 	
-	public User() {} // constructor
+	public User() { // constructor
+		creationTime = System.currentTimeMillis();
+		lastUpdateTime = System.currentTimeMillis();
+	}
 	
 	public String getID() { // returns user ID
 		return userID;
@@ -21,6 +27,18 @@ public class User implements Visitation, ObservedUser {
 	
 	public void setID(String id) { // sets the user ID
 		userID = id;
+	}
+	
+	public long getCreationTime() { // returns time when user object was created
+		return creationTime;
+	}
+	
+	public long getUpdateTime() { // returns time when user last tweeted/updated
+		return lastUpdateTime;
+	}
+	
+	public void setUpdateTime(long newTime) { // sets new update time when someone the user is following tweets
+		lastUpdateTime = newTime;
 	}
 	
 	public void addFollower(String user) { // adds new follower of user
@@ -37,11 +55,13 @@ public class User implements Visitation, ObservedUser {
 	}
 	
 	public void twit(String tweet){ // function that allows user to post a tweet to their newsfeed/other's newsfeeds
+		lastUpdateTime = System.currentTimeMillis();
 		twitfeed.add(tweet);
 		allTwits.add(tweet);
 		SmallTwit.allTweets.add(tweet);
 		for(String person : followers){
 			SmallTwit.allUsers.get(person).addTweet(tweet);
+			SmallTwit.allUsers.get(person).setUpdateTime(lastUpdateTime);
 		}
 	}
 	

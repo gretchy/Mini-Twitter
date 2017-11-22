@@ -10,6 +10,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.*;
+import java.util.Map.Entry;
 
 // Singleton and Composite is implemented in this class
 public class SmallTwit {
@@ -17,6 +18,7 @@ public class SmallTwit {
 	public static Map<String, User> allUsers = new HashMap<String, User>(); // stores all users on Small Twitter
 	public static ArrayList<String> allTweets = new ArrayList<String>(); // stores all tweets on Small Twitter
 	private int totalUsers = 0, totalGroups = 0, totalTweets = 0; // stores total num of users, total num of groups, total num of tweets
+	private String lastAddedUser; // stores the most recently added user/group for getting latest updated user calculation
 	
 	private static SmallTwit instance = null;
 	private JFrame twitterFrame;
@@ -46,7 +48,7 @@ public class SmallTwit {
 	private void initializeFrame() { // initializes the frame
 		twitterFrame = new JFrame();
 		twitterFrame.setTitle("Small Twitter");
-		twitterFrame.setBounds(200, 200, 850, 600);
+		twitterFrame.setBounds(200, 200, 850, 640);
 		twitterFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		twitterFrame.getContentPane().setLayout(null);
 		
@@ -97,9 +99,10 @@ public class SmallTwit {
 		allUsers.put("oostu", new User());
 		rootNode.add(new DefaultMutableTreeNode("ppstu2"));
 		allUsers.put("ppstu2", new User());
+		lastAddedUser = "ppstu2";
 		treeModel.reload();
 
-		TwitterTree.setBounds(10, 16, 375, 472);
+		TwitterTree.setBounds(10, 16, 375, 549);
 		twitterFrame.getContentPane().add(TwitterTree);
 
 		// Add User section
@@ -129,6 +132,7 @@ public class SmallTwit {
 						rootNode.add(new DefaultMutableTreeNode(userTextField.getText()));
 						treeModel.reload(rootNode);
 					}
+					lastAddedUser = userTextField.getText();
 					outputPane.append("\nAdded User " + userTextField.getText());
 				}
 				else {
@@ -167,6 +171,7 @@ public class SmallTwit {
 						rootNode.add(newGroup);
 						treeModel.reload(rootNode);
 					}
+					lastAddedUser = groupTextField.getText();
 					outputPane.append("\nAdded Group " + groupTextField.getText());
 					totalGroups++;
 				}
@@ -280,5 +285,60 @@ public class SmallTwit {
 		});
 		posPercentageButton.setBounds(587, 422, 230, 66);
 		twitterFrame.getContentPane().add(posPercentageButton);
+		
+		// section to check whether all user/group IDs are unique or not
+		JButton uniqueButton = new JButton("Validate all IDs");
+		uniqueButton.setFont(new Font("Arial", Font.BOLD, 20));
+		uniqueButton.setBackground(new Color(128, 172, 229));
+		uniqueButton.setForeground(new Color(82, 91, 102));
+		uniqueButton.setBorderPainted(false);
+
+		uniqueButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String validity = "";
+				boolean uniqueness = true; // assuming true until we find duplicates
+				
+				for(Entry<String, User> entry : allUsers.entrySet()) { // iterating through hash map
+					if (entry.getKey().contains(" ")) // checks for spaces in the user ID
+						uniqueness = false;
+					if (allUsers.containsValue(entry)) // checks for duplication of user IDs
+						uniqueness = false;
+				}
+								
+				if(uniqueness)
+					validity = "All IDs are valid and unique.";
+				else
+					validity = "Some IDs are not valid. There are duplicates.";
+							
+				outputPane.append("\n" + validity);
+			}
+		});
+		uniqueButton.setBounds(395, 499, 182, 66);
+		twitterFrame.getContentPane().add(uniqueButton);
+		
+		// section to display latest updated user
+		JButton lastUpdated = new JButton("Last Updated User");
+		lastUpdated.setFont(new Font("Arial", Font.BOLD, 20));
+		lastUpdated.setBackground(new Color(128, 172, 229));
+		lastUpdated.setForeground(new Color(82, 91, 102));
+		lastUpdated.setBorderPainted(false);
+
+		lastUpdated.addActionListener(new ActionListener() {
+			@SuppressWarnings("unchecked")
+			public void actionPerformed(ActionEvent e) {
+				String latestUpdatedUser = lastAddedUser; // assumes first user in hashmap made the most recent update for comparison
+				long latestUpdatedUserTime = allUsers.get(latestUpdatedUser).getUpdateTime(); // stores time for the latestUpdatedUser
+				
+				for(Entry<String, User> entry : allUsers.entrySet()) {
+					String comparePerson = entry.getKey();
+					if (entry.getValue().getUpdateTime() > latestUpdatedUserTime)
+						latestUpdatedUser = entry.getKey();
+				}
+				
+				outputPane.append("\nUser who most recently updated: " + latestUpdatedUser);
+			}
+		});
+		lastUpdated.setBounds(587, 499, 230, 66);
+		twitterFrame.getContentPane().add(lastUpdated);
 	}
 }

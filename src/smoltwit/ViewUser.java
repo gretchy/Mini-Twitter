@@ -2,6 +2,7 @@ package smoltwit;
 
 import javax.swing.*;
 import java.awt.event.ActionListener;
+import java.text.DateFormat;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -37,7 +38,13 @@ public class ViewUser {
 		uvFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		uvFrame.getContentPane().setLayout(null);
 		
-		// displays for following, followers, and newsfeed
+		// displaying the creation time of the user
+		JTextArea userCreationTimeTxtField = new JTextArea();
+		userCreationTimeTxtField.setText("User created on " + DateFormat.getInstance().format(user.getCreationTime()));
+		userCreationTimeTxtField.setBounds(10, 5, 500, 25);
+		uvFrame.getContentPane().add(userCreationTimeTxtField);
+		
+		// displays for following, followers, newsfeed, and user creation time
 		JTextArea followingPane = new JTextArea();
 		JTextArea followersPane = new JTextArea();
 		JTextArea tweetTextField = new JTextArea();
@@ -46,19 +53,17 @@ public class ViewUser {
             public void actionPerformed(ActionEvent evt) {
             	
         		followingPane.setText("----- Currently Following Users -----");
-        		followingPane.setBounds(10, 72, 230, 135);
+        		followingPane.setBounds(10, 87, 230, 135);
         		uvFrame.getContentPane().add(followingPane);
         		followingPane.append("\n" + user.getFollowing());
         		
-        		
-        		followersPane.setText("----- Your Followers -----");
-        		followersPane.setBounds(249, 72, 230, 135);
+        		followersPane.setText("----- Followers -----");
+        		followersPane.setBounds(249, 87, 230, 135);
         		uvFrame.getContentPane().add(followersPane);
         		followersPane.append("\n" + user.getFollowers());
         		
-        		
-        		tweetTextField.setText("----- Twit NewsFeed -----");
-        		tweetTextField.setBounds(10, 278, 469, 177);
+        		tweetTextField.setText("----- Twit NewsFeed -----   last updated " + DateFormat.getTimeInstance().format(user.getUpdateTime()));
+        		tweetTextField.setBounds(10, 293, 469, 177);
         		uvFrame.getContentPane().add(tweetTextField);
         		tweetTextField.append("\n" + user.getTweets());
             }
@@ -70,7 +75,7 @@ public class ViewUser {
 		// section to follow a new user
 		JTextField userTextField = new JTextField(); // text field to enter user ID to follow
 		userTextField.setText("User Id");
-		userTextField.setBounds(10, 11, 223, 60);
+		userTextField.setBounds(10, 26, 230, 60);
 		uvFrame.getContentPane().add(userTextField);
 		userTextField.setColumns(10);
 		
@@ -99,13 +104,13 @@ public class ViewUser {
 				}
 			}
 		});
-		followButton.setBounds(247, 11, 225, 60);
+		followButton.setBounds(249, 26, 225, 60);
 		uvFrame.getContentPane().add(followButton);
 		
 		// section for user to send a tweet
 		JTextField sendTweetTxtField = new JTextField(); // text field for tweet
 		sendTweetTxtField.setText("Tweet Message");
-		sendTweetTxtField.setBounds(10, 216, 255, 60);
+		sendTweetTxtField.setBounds(10, 231, 255, 60);
 		uvFrame.getContentPane().add(sendTweetTxtField);
 		sendTweetTxtField.setColumns(10);
 		
@@ -122,7 +127,7 @@ public class ViewUser {
 				tweetTextField.append(news);				
 			}
 		});
-		postTweetButton.setBounds(275, 216, 204, 60);
+		postTweetButton.setBounds(275, 231, 204, 60);
 		uvFrame.getContentPane().add(postTweetButton);
 	}
 }

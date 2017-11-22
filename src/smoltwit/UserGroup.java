@@ -7,6 +7,7 @@ public class UserGroup implements Visitation{
 	
 	private String groupID; // unique ID used to group users
 	private static int numGroups = 2; // stores the total amount of groups in the tree
+	private long creationTime; // stores the time when user object is created
 	
 	ArrayList<String> groupMems = new ArrayList<String>(); // list stores the IDs of users in the group
 	
@@ -20,6 +21,10 @@ public class UserGroup implements Visitation{
 	
 	public void setID(String id) { // sets the ID for a user group
 		groupID = id;
+	}
+	
+	public long getCreationTime() { // returns time when group object was created
+		return creationTime;
 	}
 	
 	public void addToGroup(User user) { // adds user to the group
