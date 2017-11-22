@@ -309,9 +309,9 @@ public class SmallTwit {
 				if(uniqueness)
 					validity = "All IDs are valid and unique.";
 				else
-					validity = "Some IDs are not valid. There are duplicates.";
+					validity = "Some IDs are not valid.";
 							
-				outputPane.append("\n" + validity);
+				outputPane.setText("\n" + validity);
 			}
 		});
 		uniqueButton.setBounds(395, 499, 182, 66);
@@ -334,7 +334,7 @@ public class SmallTwit {
 						latestUpdatedUser = entry.getKey();
 				}
 				
-				outputPane.append("\nUser who most recently updated: " + latestUpdatedUser);
+				outputPane.setText("\nUser who most recently updated: " + latestUpdatedUser);
 			}
 		});
 		lastUpdated.setBounds(587, 499, 230, 66);
